@@ -1,0 +1,5 @@
+@startuml Project Model Class Diagram
+
+A --|> B
+
+@enduml
