@@ -1,5 +1,58 @@
 @startuml Project Model Class Diagram
 
-A --|> B
+skin rose
+
+title Stock Prophet
+
+
+package Main{
+
+}
+package Userinterface{
+class Input{
+  +getUserInput(): string
+  +displayPrediction(predict: Prediction):void
+}
+class User{
+  +searchArtricles(keyword: string): void
+  +analyseSntiment(articles: article)
+  +predictStockprice(company: string)
+  +feedDataToAI(data:any)...
+  
+}
+Input --> User
+User --> Input
+}
+
+
+package NeuralNetwork{
+class NeuralNetwork{
+  +train(trainingData: List<article>): void
+  +predict(input: String): Prediction
+
+}
+class Prediction{
+  -sentiment: Sentiment
+  +getSentiment(): Sentiment
+
+}
+NeuralNetwork --> Prediction
+}
+package Datacollection{
+  class LinkExtractor{
+  -title: name
+  -content: all 
+}
+class ParagraphExtractor{
+  -content: all <p> of html
+}
+
+LinkExtractor --> ParagraphExtractor
+}
+
+Main --> Userinterface
+Main --> NeuralNetwork
+Main --> Datacollection
+NeuralNetwork <-- Datacollection
 
 @enduml
