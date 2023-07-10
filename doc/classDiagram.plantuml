@@ -5,54 +5,92 @@ skin rose
 title Stock Prophet
 
 
-package Main{
+package StockProphetLib {
+    class Stock {
+        +Name: string
+        +ArticlesFetched: Queue<Article>
+        +ArticlesPrepared: Queue<Article>
+        +Sentiments: Queue<Sentiment>
+        +Prediction: float
+    }
 
-}
-package Userinterface{
-class Input{
-  +getUserInput(): string
-  +displayPrediction(predict: Prediction):void
-}
-class User{
-  +searchArtricles(keyword: string): void
-  +analyseSntiment(articles: article)
-  +predictStockprice(company: string)
-  +feedDataToAI(data:any)...
-  
-}
-Input --> User
-User --> Input
+    class Article {
+        +ID: int
+        +Link: string
+        +Title: string
+        +Content: string
+    }
+
+    class Sentiment {
+        -Article: Article
+        +Sentiment: float
+    }
+
+    class StockProphet << (S,#FF7700) Singleton >> {
+        -Collector: 
+        -PreProcessor:
+        -Predictor:
+        +Run(): void
+    }
 }
 
 
-package NeuralNetwork{
-class NeuralNetwork{
-  +train(trainingData: List<article>): void
-  +predict(input: String): Prediction
+package UserInterface{
+    /'
+    class Input{
+        +getUserInput(): string
+        +displayPrediction(predict: Prediction):void
+    }
+    class User{
+        +searchArtricles(keyword: string): void
+        +analyseSntiment(articles: article)
+        +predictStockprice(company: string)
+        +feedDataToAI(data:any)...    
+    }
+    Input --> User
+    User --> Input
+    '/
+    
+    class Console {
+        +GetRequest(): string
+        +Update(): Action
+        +PrintResult(): Action
+    }
+}
 
-}
-class Prediction{
-  -sentiment: Sentiment
-  +getSentiment(): Sentiment
 
+package DataProcessing{
+    class NeuralNetwork{
+        +train(trainingData: List<article>): void
+        +predict(input: String): Prediction
+    }
+
+    class Prediction{
+        -sentiment: Sentiment
+        +getSentiment(): Sentiment
+    }
+
+    NeuralNetwork --> Prediction
 }
-NeuralNetwork --> Prediction
-}
+
 package Datacollection{
-  class LinkExtractor{
-  -title: name
-  -content: all 
-}
-class ParagraphExtractor{
-  -content: all <p> of html
+    class LinkExtractor{
+        -title: name
+        -content: all 
+    }
+
+    class ParagraphExtractor{
+        -c  ontent: all <p> of html
+    }
+
+    LinkExtractor --> ParagraphExtractor
 }
 
-LinkExtractor --> ParagraphExtractor
-}
-
+/'
 Main --> Userinterface
 Main --> NeuralNetwork
 Main --> Datacollection
+'/
 NeuralNetwork <-- Datacollection
 
 @enduml
