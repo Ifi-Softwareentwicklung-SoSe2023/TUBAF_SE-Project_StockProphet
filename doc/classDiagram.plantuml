@@ -2,10 +2,52 @@
 
 skin rose
 
-title Stock Prophet
+title Stock Prophet Application
 
 
 package StockProphetLib {
+
+    class StockProphet << (S,#FF7700) Singleton >> {
+        -Collector: (ProcessingStep) Collector
+        -PreProcessor: (ProcessingStep) PreProcessor
+        -Evaluator: (ProcessingStep) Evaluator
+        +Run(): void
+    }
+    StockProphet --> Collector
+    StockProphet --> PreProcessor
+    StockProphet --> Evaluator
+
+    abstract ProcessingStep {
+        -MyStock: Stock
+        +Run(Stock MyStock): void
+    }
+    ProcessingStep --> Stock
+
+
+    class Collector {
+        -Links: List<string>
+        -LinkCollector: LinkCollector
+        -GetLinks(): void
+        -GetArticles(): void
+    }
+    Collector --|> ProcessingStep
+    Collector --> WebCollectorLib.LinkCollector
+
+
+    class PreProcessor {
+        -RemoveAuthors(): void
+    }
+    PreProcessor --|> ProcessingStep
+
+
+    class Evaluator {
+        -SentimentEval: ISentiment
+        -EvaluateParagraph(string): float
+    }
+    Evaluator --|> ProcessingStep
+    Evaluator --> SentimentEvalLib.ISentiment
+
+
     class Stock {
         +Name: string
         +ArticlesFetched: Queue<Article>
@@ -13,6 +55,8 @@ package StockProphetLib {
         +Sentiments: Queue<Sentiment>
         +Prediction: float
     }
+    Stock *-- Article
+
 
     class Article {
         +ID: int
@@ -20,77 +64,58 @@ package StockProphetLib {
         +Title: string
         +Content: string
     }
-
-    class Sentiment {
-        -Article: Article
-        +Sentiment: float
-    }
-
-    class StockProphet << (S,#FF7700) Singleton >> {
-        -Collector: 
-        -PreProcessor:
-        -Predictor:
-        +Run(): void
-    }
 }
 
 
-package UserInterface{
-    /'
-    class Input{
-        +getUserInput(): string
-        +displayPrediction(predict: Prediction):void
-    }
-    class User{
-        +searchArtricles(keyword: string): void
-        +analyseSntiment(articles: article)
-        +predictStockprice(company: string)
-        +feedDataToAI(data:any)...    
-    }
-    Input --> User
-    User --> Input
-    '/
-    
+package UserInterface 
+{    
     class Console {
         +GetRequest(): string
-        +Update(): Action
-        +PrintResult(): Action
+        +Update(): void
+        +PrintResult(): void
     }
 }
 
 
-package DataProcessing{
-    class NeuralNetwork{
-        +train(trainingData: List<article>): void
-        +predict(input: String): Prediction
+package WebCollectorLib 
+{
+    class LinkCollector {
+        -Keyword: string
+        +Links: List<string>
+        +LinkCollector(string keyword)
+        +FindLinks(): void
+        +FilterLinks(): void
     }
 
-    class Prediction{
-        -sentiment: Sentiment
-        +getSentiment(): Sentiment
+    class ContentCollector {
+        {static} +Download(string Link): string
     }
-
-    NeuralNetwork --> Prediction
 }
 
-package Datacollection{
-    class LinkExtractor{
-        -title: name
-        -content: all 
+
+package SentimentEvalLib 
+{
+    interface ISentiment {
+        +LoadModel(string Path): void
+        +Evaluate(string Paragraph): float
     }
 
-    class ParagraphExtractor{
-        -c  ontent: all <p> of html
+    interface ISentimentTrain {
+        +LoadData(string Path): void
+        +CreateModel(): void
+        +Fit(): void
+        +Test(): void
+        +SaveModel(string Path):void
     }
-
-    LinkExtractor --> ParagraphExtractor
+    
+    class SentimentEvaluator {
+        -MlContext: MLContext
+        -SplitDataView: TrainTestData
+        -Model: ITransformer
+    }
+    SentimentEvaluator --|> ISentiment
+    SentimentEvaluator --|> ISentimentTrain
 }
 
-/'
-Main --> Userinterface
-Main --> NeuralNetwork
-Main --> Datacollection
-'/
-NeuralNetwork <-- Datacollection
 
 @enduml
