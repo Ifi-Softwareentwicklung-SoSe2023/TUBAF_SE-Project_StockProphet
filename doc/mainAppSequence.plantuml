@@ -1,0 +1,35 @@
+@startuml MainApp Sequence Diagram
+
+actor User
+participant Main 
+collections Tasks
+
+Main -> User : GetInput()
+User --> Main
+
+Main -> Main : GetLinks()
+
+Main -> Tasks : Run(Link)
+
+Tasks -> Tasks : Download()
+activate Tasks
+Tasks <--
+Tasks --> User : progress()
+deactivate Tasks
+
+Tasks -> Tasks : PreProcess()
+activate Tasks
+Tasks <--
+Tasks --> User : progress()
+deactivate Tasks
+
+Tasks -> Tasks : Evaluate()
+activate Tasks
+Tasks <--
+Tasks --> User : progress()
+deactivate Tasks
+
+Tasks --> Main : Sentiment
+Main -> User : showResult()
+
+@enduml
