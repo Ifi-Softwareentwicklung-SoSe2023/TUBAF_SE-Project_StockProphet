@@ -1,0 +1,29 @@
+@startuml StockProphet Model Training App Sequence Diagram
+
+skinparam ResponseMessageBelowArrow true
+
+' participants '
+participant Main
+participant ISentimentTrain
+database CSV_Dataset
+
+
+Main -> ISentimentTrain : LoadData()
+ISentimentTrain -> CSV_Dataset
+ISentimentTrain <-- CSV_Dataset
+Main <-- ISentimentTrain
+
+Main -> ISentimentTrain : CreateModel()
+Main <-- ISentimentTrain
+
+Main -> ISentimentTrain : Fit()
+... extensive model training ...
+Main <-- ISentimentTrain
+
+Main -> ISentimentTrain : Test()
+Main <-- ISentimentTrain : test result
+
+Main -> ISentimentTrain : SaveModel()
+Main <-- ISentimentTrain
+
+@enduml

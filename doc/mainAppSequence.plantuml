@@ -1,4 +1,4 @@
-@startuml StockProphetApp Sequence Diagram
+@startuml StockProphet Main App Sequence Diagram
 
 skinparam ResponseMessageBelowArrow true
 
