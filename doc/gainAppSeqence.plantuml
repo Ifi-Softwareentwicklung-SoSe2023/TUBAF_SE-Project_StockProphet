@@ -1,9 +1,6 @@
 @startuml StockProphet collecting Data for Neural Network
 
 
-
-
-
 skinparam ResponseMessageBelowArrow true
 group webAccess 
 
