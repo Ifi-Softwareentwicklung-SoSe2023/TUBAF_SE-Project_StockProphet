@@ -8,30 +8,32 @@ title Stock Prophet Application
 package StockProphetLib {
 
     class StockProphet << (S,#FF7700) Singleton >> {
-        -Collector: (ProcessingStep) Collector
-        -PreProcessor: (ProcessingStep) PreProcessor
-        -Evaluator: (ProcessingStep) Evaluator
+        -Links: List<string>
+        -LinkCollector: LinkCollector
+        -Collector: Collector
+        -PreProcessor: PreProcessor
+        -Evaluator: Evaluator
         +Run(): void
     }
+    StockProphet --> WebCollectorLib.LinkCollector
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
 
     abstract ProcessingStep {
-        -MyStock: Stock
-        +Run(Stock MyStock): void
+        -Article: Article
+        +Run(Article): void
     }
-    ProcessingStep --> Stock
+    ProcessingStep --> Article
 
 
     class Collector {
-        -Links: List<string>
-        -LinkCollector: LinkCollector
+        -ContentCollector: ContentCollector
         -GetLinks(): void
         -GetArticles(): void
     }
     Collector --|> ProcessingStep
-    Collector --> WebCollectorLib.LinkCollector
+    Collector --> WebCollectorLib.ContentCollector
 
 
     class PreProcessor {
@@ -46,16 +48,6 @@ package StockProphetLib {
     }
     Evaluator --|> ProcessingStep
     Evaluator --> SentimentEvalLib.ISentiment
-
-
-    class Stock {
-        +Name: string
-        +ArticlesFetched: Queue<Article>
-        +ArticlesPrepared: Queue<Article>
-        +Sentiments: Queue<Sentiment>
-        +Prediction: float
-    }
-    Stock *-- Article
 
 
     class Article {
