@@ -7,24 +7,22 @@ title Stock Prophet Application
 
 package StockProphetLib {
 
-    class StockProphet << (S,#FF7700) Singleton >> {
+    class StockProphet {
         -Links: List<string>
         -LinkCollector: LinkCollector
-        -Collector: Collector
-        -PreProcessor: PreProcessor
-        -Evaluator: Evaluator
-        +Run(): void
+        -Handlers: IArticleHandler
+        +Prophesy(string keyword): void
+        -StartTasks(): void
     }
     StockProphet --> WebCollectorLib.LinkCollector
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
 
-    abstract ProcessingStep {
-        -Article: Article
+
+    interface IArticleHandler {
         +Run(Article): void
     }
-    ProcessingStep --> Article
 
 
     class Collector {
@@ -32,21 +30,21 @@ package StockProphetLib {
         -GetLinks(): void
         -GetArticles(): void
     }
-    Collector --|> ProcessingStep
+    Collector --|> IArticleHandler
     Collector --> WebCollectorLib.ContentCollector
 
 
     class PreProcessor {
         -RemoveAuthors(): void
     }
-    PreProcessor --|> ProcessingStep
+    PreProcessor --|> IArticleHandler
 
 
     class Evaluator {
         -SentimentEval: ISentiment
         -EvaluateParagraph(string): float
     }
-    Evaluator --|> ProcessingStep
+    Evaluator --|> IArticleHandler
     Evaluator --> SentimentEvalLib.ISentiment
 
 
@@ -89,7 +87,7 @@ package SentimentEvalLib
 {
     interface ISentiment {
         +LoadModel(string Path): void
-        +Evaluate(string Paragraph): float
+        +Evaluate(SentimentData): SentimentPrediction
     }
 
     interface ISentimentTrain {
@@ -107,6 +105,17 @@ package SentimentEvalLib
     }
     SentimentEvaluator --|> ISentiment
     SentimentEvaluator --|> ISentimentTrain
+
+    class SentimentData {
+        +Text: string
+        +Sentiment: bool
+    }
+
+    class SentimentPrediction {
+        +Prediction: bool
+        +Probability: float
+    }
+    SentimentPrediction --|> SentimentData
 }
 
 
