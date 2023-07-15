@@ -8,6 +8,7 @@ title Stock Prophet Application
 package StockProphetLib {
 
     class StockProphet {
+        -Terminal: Terminal
         -Links: List<string>
         -LinkCollector: LinkCollector
         -Handlers: IArticleHandler
@@ -54,14 +55,12 @@ package StockProphetLib {
         +Title: string
         +Content: string
     }
-}
 
 
-package UserInterface 
-{    
-    class Console {
-        +GetRequest(): string
-        +Update(): void
+    class Terminal {
+        -StatusTemplate: string
+        +PrintStatus(): void
+        -ResultTemplate: string
         +PrintResult(): void
     }
 }
@@ -117,6 +116,5 @@ package SentimentEvalLib
     }
     SentimentPrediction --|> SentimentData
 }
-
 
 @enduml
