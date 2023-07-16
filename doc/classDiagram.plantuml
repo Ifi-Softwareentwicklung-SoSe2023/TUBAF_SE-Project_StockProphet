@@ -19,7 +19,7 @@ package StockProphetLib {
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
-    CollectorProgram --> WebCollectorLib.LinkCollector
+    
 
     interface IArticleHandler {
         +Run(Article): void
@@ -32,9 +32,8 @@ package StockProphetLib {
         -GetArticles(): void
     }
     Collector --|> IArticleHandler
-    Collector --> WebCollectorLib.ContentCollector
     Collector <--> WebCollectorLib.CollectorProgram
-    CollectorProgram --> WebCollectorLib.ContentCollector
+    
 
     class PreProcessor {
         -RemoveAuthors(): void
