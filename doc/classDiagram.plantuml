@@ -72,25 +72,45 @@ package WebCollectorLib
         +Main(args: string[]): Task
     }
 
+  
+
     class LinkCollector {
     
         -Keyword: string
-        +Links: List<string>
-        +LinkCollector(string keyword)
+        +DownloadLinks(articleUrl: string): async Task<string[]>
         +FindLinks(): void
         +FilterLinks(): void
-        
-        +DownloadLinks(articleUrl: string): Task<string[]>
+
         
     }
 
     class ContentCollector {
-         +Download(string Link): string
-         +ExtractParagraphsFromLinks(inputFile: string, outputFile: string): Task
+        +ExtractParagraphsFromLinks(links: string[]): async Task
+        -ExtractParagraphsFromLink(link): async Task<List<>>
+        +Download(string Link): string
+        +public async Task ExtractParagraphsFromLinks()
          
     }
-  CollectorProgram --> LinkCollector
-  CollectorProgram --> ContentCollector
+    class pathToLinks {
+        +Website1_Link(): ArrayList<Links>
+        +Website2_Link(): ArrayList<Links>
+        +Website3_Link(): ArrayList<Links>
+    }
+    
+    class pathToText {
+        +Website1_Text(): save_Content
+        +Website2_Text(): save_Content
+        +Website3_Text(): save_Content
+    }
+    
+    CollectorProgram --> LinkCollector
+    CollectorProgram --> ContentCollector
+    pathToLinks --> ContentCollector
+
+    pathToLinks --> pathToText
+    LinkCollector --> pathToLinks
+    ContentCollector --> pathToText
+
 }
 
 
