@@ -15,11 +15,11 @@ package StockProphetLib {
         +Prophesy(string keyword): void
         -StartTasks(): void
     }
-    StockProphet --> WebCollectorLib.LinkCollector
+    StockProphet <--> WebCollectorLib.CollectorProgram
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
-
+    CollectorProgram --> WebCollectorLib.LinkCollector
 
     interface IArticleHandler {
         +Run(Article): void
@@ -33,7 +33,8 @@ package StockProphetLib {
     }
     Collector --|> IArticleHandler
     Collector --> WebCollectorLib.ContentCollector
-
+    Collector <--> WebCollectorLib.CollectorProgram
+    CollectorProgram --> WebCollectorLib.ContentCollector
 
     class PreProcessor {
         -RemoveAuthors(): void
@@ -68,17 +69,29 @@ package StockProphetLib {
 
 package WebCollectorLib 
 {
+    class CollectorProgram {
+        +Main(args: string[]): Task
+    }
+
     class LinkCollector {
+    
         -Keyword: string
         +Links: List<string>
         +LinkCollector(string keyword)
         +FindLinks(): void
         +FilterLinks(): void
+        
+        +DownloadLinks(articleUrl: string): Task<string[]>
+        
     }
 
     class ContentCollector {
-        {static} +Download(string Link): string
+         +Download(string Link): string
+         +ExtractParagraphsFromLinks(inputFile: string, outputFile: string): Task
+         
     }
+  CollectorProgram --> LinkCollector
+  CollectorProgram --> ContentCollector
 }
 
 
