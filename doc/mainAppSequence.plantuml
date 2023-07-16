@@ -1,35 +1,81 @@
-@startuml MainApp Sequence Diagram
+@startuml StockProphet Main App Sequence Diagram
 
-actor User
-participant Main 
+skinparam ResponseMessageBelowArrow true
+
+
+' participants '
+
+actor UserInterface
+participant Main
+participant StockProphet 
 collections Tasks
 
-Main -> User : GetInput()
-User --> Main
+participant Collector
+participant PreProcessor
+participant Evaluator
 
-Main -> Main : GetLinks()
 
-Main -> Tasks : Run(Link)
+
+' startup sequence '
+
+activate Main #fc0303
+Main -> StockProphet : Run()
+deactivate Main
+activate StockProphet #fca103
+
+StockProphet -> UserInterface : GetInput()
+deactivate StockProphet
+StockProphet <-- UserInterface : keyword
+activate StockProphet #fca103
+
+StockProphet -> StockProphet : GetLinks()
+activate StockProphet #fcfc03
+StockProphet -> Collector : GetLinks()
+StockProphet <-- Collector : site links
+deactivate StockProphet
+
+StockProphet -> StockProphet : StartTasks()
+activate StockProphet #fcfc03
+StockProphet -> Tasks : Run()
+deactivate StockProphet
+activate Tasks #73fc03
+
+
+
+' parallel task sequence '
 
 Tasks -> Tasks : Download()
-activate Tasks
-Tasks <--
-Tasks --> User : progress()
+activate Tasks #03a1fc
+Tasks -> Collector : Download()
+Tasks <-- Collector : site content
+Tasks --> UserInterface : progress()
 deactivate Tasks
 
-Tasks -> Tasks : PreProcess()
-activate Tasks
-Tasks <--
-Tasks --> User : progress()
+Tasks -> Tasks : Prepare()
+activate Tasks #03a1fc
+Tasks -> PreProcessor : Prepare()
+Tasks <-- PreProcessor : cleaned up paragraphs
+Tasks --> UserInterface : progress()
 deactivate Tasks
 
 Tasks -> Tasks : Evaluate()
-activate Tasks
-Tasks <--
-Tasks --> User : progress()
+activate Tasks #03a1fc
+Tasks -> Evaluator : Evaluate()
+Tasks <-- Evaluator : paragraph sentiment
+Tasks --> UserInterface : progress()
 deactivate Tasks
 
-Tasks --> Main : Sentiment
-Main -> User : showResult()
+Tasks --> StockProphet : total sentiment
+deactivate Tasks
+
+
+
+' end sequence '
+
+StockProphet -> UserInterface : showResult()
+
+StockProphet --> Main
+deactivate StockProphet
+activate Main #fc0303
 
 @enduml

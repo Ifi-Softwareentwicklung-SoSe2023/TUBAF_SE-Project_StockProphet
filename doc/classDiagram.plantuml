@@ -7,55 +7,46 @@ title Stock Prophet Application
 
 package StockProphetLib {
 
-    class StockProphet << (S,#FF7700) Singleton >> {
-        -Collector: (ProcessingStep) Collector
-        -PreProcessor: (ProcessingStep) PreProcessor
-        -Evaluator: (ProcessingStep) Evaluator
-        +Run(): void
+    class StockProphet {
+        -Terminal: Terminal
+        -Links: List<string>
+        -LinkCollector: LinkCollector
+        -Handlers: IArticleHandler
+        +Prophesy(string keyword): void
+        -StartTasks(): void
     }
+    StockProphet <--> WebCollectorLib.CollectorProgram
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
+    
 
-    abstract ProcessingStep {
-        -MyStock: Stock
-        +Run(Stock MyStock): void
+    interface IArticleHandler {
+        +Run(Article): void
     }
-    ProcessingStep --> Stock
 
 
     class Collector {
-        -Links: List<string>
-        -LinkCollector: LinkCollector
+        -ContentCollector: ContentCollector
         -GetLinks(): void
         -GetArticles(): void
     }
-    Collector --|> ProcessingStep
-    Collector --> WebCollectorLib.LinkCollector
-
+    Collector --|> IArticleHandler
+    Collector <--> WebCollectorLib.CollectorProgram
+    
 
     class PreProcessor {
         -RemoveAuthors(): void
     }
-    PreProcessor --|> ProcessingStep
+    PreProcessor --|> IArticleHandler
 
 
     class Evaluator {
         -SentimentEval: ISentiment
         -EvaluateParagraph(string): float
     }
-    Evaluator --|> ProcessingStep
+    Evaluator --|> IArticleHandler
     Evaluator --> SentimentEvalLib.ISentiment
-
-
-    class Stock {
-        +Name: string
-        +ArticlesFetched: Queue<Article>
-        +ArticlesPrepared: Queue<Article>
-        +Sentiments: Queue<Sentiment>
-        +Prediction: float
-    }
-    Stock *-- Article
 
 
     class Article {
@@ -64,14 +55,12 @@ package StockProphetLib {
         +Title: string
         +Content: string
     }
-}
 
 
-package UserInterface 
-{    
-    class Console {
-        +GetRequest(): string
-        +Update(): void
+    class Terminal {
+        -StatusTemplate: string
+        +PrintStatus(): void
+        -ResultTemplate: string
         +PrintResult(): void
     }
 }
@@ -79,17 +68,29 @@ package UserInterface
 
 package WebCollectorLib 
 {
+    class CollectorProgram {
+        +Main(args: string[]): Task
+    }
+
     class LinkCollector {
+    
         -Keyword: string
         +Links: List<string>
         +LinkCollector(string keyword)
         +FindLinks(): void
         +FilterLinks(): void
+        
+        +DownloadLinks(articleUrl: string): Task<string[]>
+        
     }
 
     class ContentCollector {
-        {static} +Download(string Link): string
+         +Download(string Link): string
+         +ExtractParagraphsFromLinks(inputFile: string, outputFile: string): Task
+         
     }
+  CollectorProgram --> LinkCollector
+  CollectorProgram --> ContentCollector
 }
 
 
@@ -97,7 +98,7 @@ package SentimentEvalLib
 {
     interface ISentiment {
         +LoadModel(string Path): void
-        +Evaluate(string Paragraph): float
+        +Evaluate(SentimentData): SentimentPrediction
     }
 
     interface ISentimentTrain {
@@ -115,7 +116,17 @@ package SentimentEvalLib
     }
     SentimentEvaluator --|> ISentiment
     SentimentEvaluator --|> ISentimentTrain
-}
 
+    class SentimentData {
+        +Text: string
+        +Sentiment: bool
+    }
+
+    class SentimentPrediction {
+        +Prediction: bool
+        +Probability: float
+    }
+    SentimentPrediction --|> SentimentData
+}
 
 @enduml

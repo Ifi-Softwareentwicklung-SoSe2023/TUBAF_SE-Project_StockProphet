@@ -1,0 +1,44 @@
+@startuml StockProphet collecting Data for Neural Network
+
+
+skinparam ResponseMessageBelowArrow true
+group webAccess 
+
+    participant paragraphCollection
+    participant linkCollection
+    control downloadHTML
+    collections  searchWeb
+    collections  collectWeb
+
+    linkCollection -> downloadHTML : 
+    group #LightBlue download links on TargetSite
+        downloadHTML -> searchWeb
+        else #LightGreen
+        searchWeb -> downloadHTML
+    end
+    linkCollection <-- downloadHTML : 
+    linkCollection -> paragraphCollection : handing over links
+    paragraphCollection -> downloadHTML
+
+    group #LightBlue download content on linked sites :
+        downloadHTML -> collectWeb
+        else #LightGreen
+        collectWeb -> downloadHTML
+    end
+    paragraphCollection <-- downloadHTML
+
+end 
+
+
+control CleanAndPrepare
+database CSV_Dataset
+
+paragraphCollection -> CleanAndPrepare
+CleanAndPrepare -> CSV_Dataset
+
+
+
+	
+@enduml
+
+
