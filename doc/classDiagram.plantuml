@@ -72,14 +72,12 @@ package WebCollectorLib
         +Main(args: string[]): Task
     }
 
-  
+   
 
     class LinkCollector {
     
         -Keyword: string
         +DownloadLinks(articleUrl: string): async Task<string[]>
-        +FindLinks(): void
-        +FilterLinks(): void
 
         
     }
@@ -98,16 +96,22 @@ package WebCollectorLib
     }
     
     class pathToText {
-        +Website1_Text(): save_Content
-        +Website2_Text(): save_Content
-        +Website3_Text(): save_Content
+        +Website1_Text(): downloading_Text
+        +Website2_Text(): downloading_Text
+        +Website3_Text(): downloading_Text
     }
-    
+
+    class ContentFilter {
+        -Author_deletion()
+        -Special_character_deletion()
+    }
+    pathToText --> ContentFilter
+    ContentFilter --> CollectorProgram
     CollectorProgram --> LinkCollector
-    CollectorProgram --> ContentCollector
+    
     pathToLinks --> ContentCollector
 
-    pathToLinks --> pathToText
+    LinkCollector --> ContentCollector
     LinkCollector --> pathToLinks
     ContentCollector --> pathToText
 
