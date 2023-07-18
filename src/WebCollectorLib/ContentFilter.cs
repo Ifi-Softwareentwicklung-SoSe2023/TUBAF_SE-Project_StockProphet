@@ -2,7 +2,7 @@ using System;
 
 namespace WebCollectorLib
 {
-    class ContentFilter
+    static class ContentFilter
     {
         
     }   

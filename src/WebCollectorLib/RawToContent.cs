@@ -2,7 +2,7 @@ using System;
 
 namespace WebCollectorLib
 {
-    class PathToText
+    class RawToContent
     {
         
     }   
