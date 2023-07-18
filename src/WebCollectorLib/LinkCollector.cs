@@ -8,6 +8,8 @@ namespace WebCollectorLib
     {
         private string Keyword;
 
+        public LinkCollector(string keyword) {}
+
         public List<string> DownloadLinks() {}
     }   
 }

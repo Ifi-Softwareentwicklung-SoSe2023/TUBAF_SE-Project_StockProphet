@@ -1,13 +1,16 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+
 using WebCollectorLib;
+
 
 namespace StockProphetLib
 {
     class StockProphet
     {
         private Terminal Terminal;
-        private List<string> Links;
-        private LinkCollector LinkCollector;
+        private List<Article> Articles;
         private List<IArticleHandler> Handlers;
 
         public StockProphet() {}

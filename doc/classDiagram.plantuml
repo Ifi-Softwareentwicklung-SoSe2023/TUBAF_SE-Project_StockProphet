@@ -9,9 +9,8 @@ package StockProphetLib {
 
     class StockProphet {
         -Terminal: Terminal
-        -Links: List<string>
-        -LinkCollector: LinkCollector
-        -Handlers: IArticleHandler
+        -Articles: List<Article>
+        -Handlers: List<IArticleHandler>
         +Prophesy(string keyword): void
         -StartTasks(): void
     }
@@ -28,8 +27,6 @@ package StockProphetLib {
 
     class Collector {
         -ContentExtractor: RawToContent
-        -GetLinks(): void
-        -GetArticles(): void
     }
     Collector --|> IArticleHandler
     Collector --> WebCollectorLib.RawCollector
