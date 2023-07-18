@@ -15,7 +15,7 @@ package StockProphetLib {
         +Prophesy(string keyword): void
         -StartTasks(): void
     }
-    StockProphet <--> WebCollectorLib.CollectorProgram
+    StockProphet <--> WebCollectorLib.LinkCollector
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
@@ -32,14 +32,15 @@ package StockProphetLib {
         -GetArticles(): void
     }
     Collector --|> IArticleHandler
-    Collector <--> WebCollectorLib.CollectorProgram
+    Collector --> WebCollectorLib.ContentCollector
     
 
     class PreProcessor {
         -RemoveAuthors(): void
+        -ContentFilter: ContentFilter
     }
     PreProcessor --|> IArticleHandler
-
+    PreProcessor --> WebCollectorLib.ContentFilter
 
     class Evaluator {
         -SentimentEval: ISentiment
@@ -68,29 +69,45 @@ package StockProphetLib {
 
 package WebCollectorLib 
 {
-    class CollectorProgram {
-        +Main(args: string[]): Task
-    }
-
     class LinkCollector {
     
         -Keyword: string
-        +Links: List<string>
-        +LinkCollector(string keyword)
-        +FindLinks(): void
-        +FilterLinks(): void
-        
-        +DownloadLinks(articleUrl: string): Task<string[]>
+        +DownloadLinks(articleUrl: string): async Task<string[]>
+
         
     }
 
     class ContentCollector {
-         +Download(string Link): string
-         +ExtractParagraphsFromLinks(inputFile: string, outputFile: string): Task
+        +ExtractParagraphsFromLinks(links: string[]): async Task
+        -ExtractParagraphsFromLink(link): async Task<List<>>
+        +Download(string Link): string
+        +public async Task ExtractParagraphsFromLinks()
          
     }
-  CollectorProgram --> LinkCollector
-  CollectorProgram --> ContentCollector
+    class pathToLinks {
+        +Website1_Link(): ArrayList<Links>
+        +Website2_Link(): ArrayList<Links>
+        +Website3_Link(): ArrayList<Links>
+    }
+    
+    class pathToText {
+        +Website1_Text(): downloading_Text
+        +Website2_Text(): downloading_Text
+        +Website3_Text(): downloading_Text
+    }
+
+    class ContentFilter {
+        -Author_deletion()
+        -Special_character_deletion()
+    }
+    pathToText --> ContentFilter
+    
+    
+    pathToLinks --> ContentCollector
+    LinkCollector --> ContentCollector
+    LinkCollector --> pathToLinks
+    ContentCollector --> pathToText
+
 }
 
 
