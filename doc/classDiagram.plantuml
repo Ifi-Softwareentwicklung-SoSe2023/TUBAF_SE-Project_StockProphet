@@ -15,7 +15,7 @@ package StockProphetLib {
         +Prophesy(string keyword): void
         -StartTasks(): void
     }
-    StockProphet <--> WebCollectorLib.CollectorProgram
+    StockProphet <--> WebCollectorLib.LinkCollector
     StockProphet --> Collector
     StockProphet --> PreProcessor
     StockProphet --> Evaluator
@@ -32,14 +32,15 @@ package StockProphetLib {
         -GetArticles(): void
     }
     Collector --|> IArticleHandler
-    Collector <--> WebCollectorLib.CollectorProgram
+    Collector --> WebCollectorLib.ContentCollector
     
 
     class PreProcessor {
         -RemoveAuthors(): void
+        -ContentFilter: ContentFilter
     }
     PreProcessor --|> IArticleHandler
-
+    PreProcessor --> WebCollectorLib.ContentFilter
 
     class Evaluator {
         -SentimentEval: ISentiment
@@ -68,12 +69,6 @@ package StockProphetLib {
 
 package WebCollectorLib 
 {
-    class CollectorProgram {
-        +Main(args: string[]): Task
-    }
-
-   
-
     class LinkCollector {
     
         -Keyword: string
@@ -106,11 +101,9 @@ package WebCollectorLib
         -Special_character_deletion()
     }
     pathToText --> ContentFilter
-    ContentFilter --> CollectorProgram
-    CollectorProgram --> LinkCollector
+    
     
     pathToLinks --> ContentCollector
-
     LinkCollector --> ContentCollector
     LinkCollector --> pathToLinks
     ContentCollector --> pathToText
