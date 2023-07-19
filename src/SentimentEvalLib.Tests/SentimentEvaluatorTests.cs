@@ -1,14 +1,15 @@
 using System;
 using Xunit;
+using SentimentEvalLib;
 
 namespace SentimentEvalLib.Tests
 {
-    public class UnitTest1
+    public class SentimentEvaluatorTests
     {
         [Fact]
         public void Test1()
         {
-
+            
         }
     }
 }
