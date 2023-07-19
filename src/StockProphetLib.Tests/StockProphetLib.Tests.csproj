@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StockProphetLib\StockProphetLib.csproj" />
-    <ProjectReference Include="..\WebCollectorLib\WebCollectorLib.csproj" />
-    <ProjectReference Include="..\SentimentEvalLib\SentimentEvalLib.csproj" />
   </ItemGroup>
 
 </Project>

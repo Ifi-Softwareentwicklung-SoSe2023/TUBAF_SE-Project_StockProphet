@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UnitTests
+namespace StockProphetLib.Tests
 {
     public class UnitTest1
     {
