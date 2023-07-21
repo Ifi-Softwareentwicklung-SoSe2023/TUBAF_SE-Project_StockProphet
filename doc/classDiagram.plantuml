@@ -29,8 +29,7 @@ package StockProphetLib {
         -ContentExtractor: RawToContent
     }
     Collector --|> IArticleHandler
-    Collector --> WebCollectorLib.RawCollector
-    Collector --> WebCollectorLib.RawToContent
+    Collector --> WebCollectorLib.ParagraphCollector
     
 
     class PreProcessor {
@@ -75,6 +74,12 @@ package WebCollectorLib
     LinkCollector -down-> RawToLinks
     LinkCollector -right-> RawCollector
 
+    class ParagraphCollector {
+        -Keyword: string
+        +DownloadText(): List<string>
+    }
+    ParagraphCollector -down-> RawToContent
+    ParagraphCollector -left-> RawCollector
 
     class RawCollector {
         {static} +GetRaw(string link): string
