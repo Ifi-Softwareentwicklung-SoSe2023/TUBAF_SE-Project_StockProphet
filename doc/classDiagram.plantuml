@@ -69,36 +69,40 @@ package WebCollectorLib
 {
     class LinkCollector {
         -Keyword: string
+        - _client: HttpClient
+        - _rawCollector: RawCollector
+        +LinkFinder()
         +DownloadLinks(): List<string>
     }
     LinkCollector -down-> RawToLinks
     LinkCollector -right-> RawCollector
 
     class ParagraphCollector {
-        -Keyword: string
-        +DownloadText(): List<string>
+        - _client: HttpClient
+        - _rawCollector: RawCollector
+        - _rawToContent: RawToContent
+        +ParagraphExtractor()
+        +ExtractParagraphsFromLinks(links: string[]): Task<List<string>>
     }
     ParagraphCollector -down-> RawToContent
     ParagraphCollector -left-> RawCollector
 
-    class RawCollector {
-        {static} +GetRaw(string link): string
-    }
+class RawCollector {
+  - _client: HttpClient
+  + RawCollector()
+  + DownloadRawHtml(url: string): Task<string>
+}
 
 
     class RawToLinks {
-        +GetLinks(string Link, string Raw): List<string>
-        -Website1_Link(string Raw): List<string>
-        -Website2_Link(string Raw): List<string>
-        -Website3_Link(string Raw): List<string>
+        - DescendantTag: string
+        - AnchorTag: string
+        + BuildLinkPath(keyword: string): string
     }
    
 
     class RawToContent {
-        +GetContent(string Link, string Raw): List<string>
-        -Website1_Text(string Raw): string
-        -Website2_Text(string Raw): string
-        -Website3_Text(string Raw): string
+        + FindParagraphs(htmlContent: string): IEnumerable<string>
     }
 
 
