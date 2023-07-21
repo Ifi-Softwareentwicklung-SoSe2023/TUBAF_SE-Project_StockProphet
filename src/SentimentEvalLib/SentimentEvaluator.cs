@@ -27,22 +27,23 @@ namespace SentimentEvalLib
         private MLContext       MlContext;
         private DataViewSchema  Schema;
         private ITransformer    Model;
-        private PredictionEngine<SentimentData, SentimentPrediction> InferenceFunction;
+        private PredictionEngine<SentimentData, SentimentPrediction>? InferenceFunction;
 
 
         // constructor
         public SentimentEvaluator()
         {
             this.MlContext = new MLContext();
+            this.InferenceFunction = null;
         }
 
 
         // ISentimentTrain interface
-        public void ISentimentTrain.TrainModel(string DataPath) 
+        void ISentimentTrain.TrainModel(string DataPath) 
         {
             TrainTestData dataset = LoadData(DataPath);
-            CreateModel(data.TrainSet);
-            Test(data.TestSet);
+            CreateModel(dataset.TrainSet);
+            Test(dataset.TestSet);
         }
 
         private TrainTestData LoadData(string Path) 
@@ -97,12 +98,29 @@ namespace SentimentEvalLib
         // ISentiment interface
         void ISentiment.LoadModel(string Path) 
         {
+            if( !Path.EndsWith(".zip") )
+            {
+                Path += ".zip";
+            }
 
+            this.Model = MlContext.Model.Load(Path, out Schema);
         }
 
         SentimentPrediction ISentiment.Evaluate(SentimentData Data) 
         {
-            return new SentimentPrediction { Probability = -1.0f };
+            if(InferenceFunction is null)
+            {
+                this.InferenceFunction = MlContext.Model.CreatePredictionEngine
+                    <SentimentData, SentimentPrediction>(Model);
+            }
+
+            if(string.IsNullOrWhiteSpace(Data.SentimentText))
+            {
+                throw new ArgumentException("Got empty Sentiment text");
+                return new SentimentPrediction { Prediction = false, Probability = -1.0f, Score = -1.0f };
+            }
+
+            return InferenceFunction.Predict(Data);
         }
     }
 }
