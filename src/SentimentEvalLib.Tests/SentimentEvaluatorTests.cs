@@ -13,6 +13,7 @@ namespace SentimentEvalLib.Tests
         {
             // Arrange
             ISentiment evaluator = new SentimentEvaluator();
+            evaluator.LoadModel("../../../../../model/model");
             SentimentData data = new SentimentData { SentimentText = text };
 
             // Act
@@ -27,6 +28,7 @@ namespace SentimentEvalLib.Tests
         {
             // Arrange
             ISentiment evaluator = new SentimentEvaluator();
+            evaluator.LoadModel("../../../../../model/model");
             SentimentData data = new SentimentData { SentimentText = "" };
 
             // Act and Assert
