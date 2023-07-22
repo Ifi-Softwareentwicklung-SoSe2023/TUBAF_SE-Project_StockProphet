@@ -7,7 +7,7 @@ using WebCollectorLib;
 
 namespace StockProphetLib
 {
-    class StockProphet
+    public class StockProphet
     {
         private Terminal Terminal;
         private List<Article> Articles;
@@ -15,7 +15,7 @@ namespace StockProphetLib
 
         public StockProphet() {}
         
-        public float Prophesy(string keyWord) {}
+        public float Prophesy(string keyWord) { return new float(); }
 
         private void StartTasks() {}
     }

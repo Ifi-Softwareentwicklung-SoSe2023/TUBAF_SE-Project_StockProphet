@@ -7,8 +7,8 @@ namespace StockProphetLib
     {
         private ISentiment SentimentEval;
 
-        public void IArticleHandler.Run(Article article) {}
+        void IArticleHandler.Run(Article article) {}
 
-        private float EvaluateParagraph(string paragraph) {}
+        private float EvaluateParagraph(string paragraph) { return new float(); }
     }
 }

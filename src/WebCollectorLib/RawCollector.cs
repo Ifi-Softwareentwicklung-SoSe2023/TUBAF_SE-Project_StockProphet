@@ -2,8 +2,8 @@ using System;
 
 namespace WebCollectorLib
 {
-    static class RawCollector
+    public static class RawCollector
     {
-        public static string GetRaw(string Link) {}
+        public static string GetRaw(string Link) { return ""; }
     }   
 }

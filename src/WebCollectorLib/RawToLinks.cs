@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace WebCollectorLib
 {
-    class RawToLinks
+    public class RawToLinks
     {
-        public List<string> GetLinks(string Link, string Raw) {}
+        public List<string> GetLinks(string Link, string Raw) { return new List<string>(); }
 
-        private List<string> Website1_Link(string Raw) {}        
-        private List<string> Website2_Link(string Raw) {}
-        private List<string> Website3_Link(string Raw) {}
+        private List<string> Website1_Link(string Raw) { return new List<string>(); }        
+        private List<string> Website2_Link(string Raw) { return new List<string>(); }
+        private List<string> Website3_Link(string Raw) { return new List<string>(); }
     }   
 }

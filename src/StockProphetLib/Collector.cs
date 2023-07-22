@@ -3,10 +3,10 @@ using WebCollectorLib;
 
 namespace StockProphetLib
 {
-    class Collector : IArticleHandler
+    public class Collector : IArticleHandler
     {
         private RawToContent ContentExtractor;
 
-        public void IArticleHandler.Run(Article article) {}
+        void IArticleHandler.Run(Article article) {}
     }
 }
