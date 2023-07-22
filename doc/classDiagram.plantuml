@@ -26,13 +26,15 @@ package StockProphetLib {
 
 
     class Collector {
-        -ContentExtractor: RawToContent
+        -ContentExtractor: ParagraphCollector
+        +Run(Article): void
     }
     Collector --|> IArticleHandler
     Collector --> WebCollectorLib.ParagraphCollector
     
 
     class PreProcessor {
+        +Run(Article): void
         -Clean(): void
         -Seperate(): void
     }
@@ -42,6 +44,7 @@ package StockProphetLib {
 
     class Evaluator {
         -SentimentEval: ISentiment
+        +Run(Article): void
         -EvaluateParagraph(string): float
     }
     Evaluator --|> IArticleHandler
@@ -52,7 +55,8 @@ package StockProphetLib {
         +ID: int
         +Link: string
         +Title: string
-        +Content: string
+        +Paragraphs: List<string>
+        +Sentiment: float
     }
 
 
@@ -70,33 +74,41 @@ package WebCollectorLib
     class LinkCollector {
         -Keyword: string
         - _rawCollector: RawCollector
-        - _websiteParser: WebsiteParser
+        - _websiteParser: IWebsiteParser
         +FindLinks(keyword: string): Task<string[]>
     }
     LinkCollector --> RawCollector
-    LinkCollector --> WebsiteParser
+    LinkCollector --> WebsiteParser_1
+
 
     class ParagraphCollector {
         -_rawCollector: RawCollector
-        -_websiteParser: WebsiteParser+ExtractParagraphsFromLinks(links: string[]): Task<List<string>>
-        +ExtractParagraphsFromLinks(links: string[]): Task<List<string>>
+        -_websiteParser: IWebsiteParser
+        +ExtractParagraphsFromLink(link: string): Task<List<string>>
     }
     ParagraphCollector --> RawCollector
-    ParagraphCollector --> WebsiteParser
+    ParagraphCollector --> WebsiteParser_1
+
 
     class RawCollector {
-      - _client: HttpClient
-      + RawCollector()
-      + DownloadRawHtml(url: string): Task<string>
+      +_client: HttpClient
+      +DownloadRawHtml(url: string): Task<string>
     }
 
-    class WebsiteParser {
-        +FindLinks(htmlContent: string): IEnumerable<string>
-        +FindParagraphs(htmlContent: string): IEnumerable<string>
+
+    interface IWebsiteParser {
+        +FindLinks(string): Link<string>
+        +FindParagraphs(string): Link<string>
+    }
+
+    class WebsiteParser_1 {
         -DescendantTag: string
         -AnchorTag: string
+        +FindLinks(htmlContent: string): List<string>
+        +FindParagraphs(htmlContent: string): List<string>
     }
-    WebsiteParser --> RawCollector
+    WebsiteParser_1 --|> IWebsiteParser
+    
 
     class ContentFilter {
         {static} +removeAuthors()
