@@ -26,14 +26,15 @@ package StockProphetLib {
 
 
     class Collector {
-        -ContentExtractor: RawToContent
+        -ContentExtractor: ParagraphCollector
+        +Run(Article): void
     }
     Collector --|> IArticleHandler
-    Collector --> WebCollectorLib.RawCollector
-    Collector --> WebCollectorLib.RawToContent
+    Collector --> WebCollectorLib.ParagraphCollector
     
 
     class PreProcessor {
+        +Run(Article): void
         -Clean(): void
         -Seperate(): void
     }
@@ -43,6 +44,7 @@ package StockProphetLib {
 
     class Evaluator {
         -SentimentEval: ISentiment
+        +Run(Article): void
         -EvaluateParagraph(string): float
     }
     Evaluator --|> IArticleHandler
@@ -53,7 +55,8 @@ package StockProphetLib {
         +ID: int
         +Link: string
         +Title: string
-        +Content: string
+        +Paragraphs: List<string>
+        +Sentiment: float
     }
 
 
@@ -70,40 +73,50 @@ package WebCollectorLib
 {
     class LinkCollector {
         -Keyword: string
-        +DownloadLinks(): List<string>
+        - _rawCollector: RawCollector
+        - _websiteParser: IWebsiteParser
+        +FindLinks(keyword: string): Task<string[]>
     }
-    LinkCollector -down-> RawToLinks
-    LinkCollector -right-> RawCollector
+    LinkCollector --> RawCollector
+    LinkCollector --> WebsiteParser_1
+
+
+    class ParagraphCollector {
+        -_rawCollector: RawCollector
+        -_websiteParser: IWebsiteParser
+        +ExtractParagraphsFromLink(link: string): Task<List<string>>
+    }
+    ParagraphCollector --> RawCollector
+    ParagraphCollector --> WebsiteParser_1
 
 
     class RawCollector {
-        {static} +GetRaw(string link): string
+      +_client: HttpClient
+      +DownloadRawHtml(url: string): Task<string>
     }
 
 
-    class RawToLinks {
-        +GetLinks(string Link, string Raw): List<string>
-        -Website1_Link(string Raw): List<string>
-        -Website2_Link(string Raw): List<string>
-        -Website3_Link(string Raw): List<string>
-    }
-   
-
-    class RawToContent {
-        +GetContent(string Link, string Raw): List<string>
-        -Website1_Text(string Raw): string
-        -Website2_Text(string Raw): string
-        -Website3_Text(string Raw): string
+    interface IWebsiteParser {
+        +FindLinks(string): Link<string>
+        +FindParagraphs(string): Link<string>
     }
 
+    class WebsiteParser_1 {
+        -DescendantTag: string
+        -AnchorTag: string
+        +FindLinks(htmlContent: string): List<string>
+        +FindParagraphs(htmlContent: string): List<string>
+    }
+    WebsiteParser_1 --|> IWebsiteParser
+    
 
     class ContentFilter {
         {static} +removeAuthors()
         {static} +removeCharacters()
         {static} +replaceCharacters()
     }
-}
 
+}
 
 package SentimentEvalLib 
 {
