@@ -2,8 +2,26 @@ using System;
 
 namespace WebCollectorLib
 {
-    static class RawCollector
+    public class RawCollector
     {
-        public static string GetRaw(string Link) {}
-    }   
+        private readonly HttpClient _client;
+
+        public RawCollector()
+        {
+            _client = new HttpClient();
+        }
+
+        public async Task<string> DownloadRawHtml(string url)
+        {
+            try
+            {
+                return await _client.GetStringAsync(url);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error downloading raw HTML: {ex.Message}");
+                return null;
+            }
+        }
+    }
 }
