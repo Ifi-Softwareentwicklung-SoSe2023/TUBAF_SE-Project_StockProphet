@@ -69,50 +69,42 @@ package WebCollectorLib
 {
     class LinkCollector {
         -Keyword: string
-        - _client: HttpClient
         - _rawCollector: RawCollector
-        +LinkFinder()
-        +DownloadLinks(): List<string>
+        - _websiteParser: WebsiteParser
+        +FindLinks(keyword: string): Task<string[]>
     }
-    LinkCollector -down-> RawToLinks
-    LinkCollector -right-> RawCollector
+    LinkCollector --> RawCollector
+    LinkCollector --> WebsiteParser
 
     class ParagraphCollector {
-        - _client: HttpClient
-        - _rawCollector: RawCollector
-        - _rawToContent: RawToContent
-        +ParagraphExtractor()
+        -_rawCollector: RawCollector
+        -_websiteParser: WebsiteParser+ExtractParagraphsFromLinks(links: string[]): Task<List<string>>
         +ExtractParagraphsFromLinks(links: string[]): Task<List<string>>
     }
-    ParagraphCollector -down-> RawToContent
-    ParagraphCollector -left-> RawCollector
+    ParagraphCollector --> RawCollector
+    ParagraphCollector --> WebsiteParser
 
-class RawCollector {
-  - _client: HttpClient
-  + RawCollector()
-  + DownloadRawHtml(url: string): Task<string>
-}
-
-
-    class RawToLinks {
-        - DescendantTag: string
-        - AnchorTag: string
-        + BuildLinkPath(keyword: string): string
-    }
-   
-
-    class RawToContent {
-        + FindParagraphs(htmlContent: string): IEnumerable<string>
+    class RawCollector {
+      - _client: HttpClient
+      + RawCollector()
+      + DownloadRawHtml(url: string): Task<string>
     }
 
+    class WebsiteParser {
+        +FindLinks(htmlContent: string): IEnumerable<string>
+        +FindParagraphs(htmlContent: string): IEnumerable<string>
+        -DescendantTag: string
+        -AnchorTag: string
+    }
+    WebsiteParser --> RawCollector
 
     class ContentFilter {
         {static} +removeAuthors()
         {static} +removeCharacters()
         {static} +replaceCharacters()
     }
-}
 
+}
 
 package SentimentEvalLib 
 {
