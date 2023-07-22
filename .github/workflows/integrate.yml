@@ -1,0 +1,38 @@
+name: .NET Test Pull-Request
+
+on:
+  push:
+    branches: [ main ]
+    
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test_changes:
+
+    runs-on: [ubuntu-latest, windows-latest]
+        
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with: 
+          dotnet-version: 5.0.17
+
+      - name: Test WebCollectorLib
+        run: |
+          cd src/WebCollectorLib.Tests
+          dotnet test
+
+      - name: Test SentimentEvalLib
+        run: |
+          cd src/SentimentEvalLib.Tests
+          dotnet test
+
+      - name: Test StockProphetLib
+        run: |
+          cd src/StockProphetLib.Tests
+          dotnet test
+
+
