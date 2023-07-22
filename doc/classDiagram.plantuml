@@ -109,21 +109,19 @@ package SentimentEvalLib
 {
     interface ISentiment {
         +LoadModel(string Path): void
-        +Evaluate(SentimentData): SentimentPrediction
+        +Evaluate(SentimentData Data): SentimentPrediction
     }
 
     interface ISentimentTrain {
-        +LoadData(string Path): void
-        +CreateModel(): void
-        +Fit(): void
-        +Test(): void
-        +SaveModel(string Path):void
+        +TrainModel(string Path): void
+        +SaveModel(string Path): void
     }
     
     class SentimentEvaluator {
         -MlContext: MLContext
-        -SplitDataView: TrainTestData
+        -Schema: DataViewSchema
         -Model: ITransformer
+        -InferenceFunction: PredictionEngine<,>
     }
     SentimentEvaluator --|> ISentiment
     SentimentEvaluator --|> ISentimentTrain
