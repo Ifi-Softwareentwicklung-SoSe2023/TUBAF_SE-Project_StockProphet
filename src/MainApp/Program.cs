@@ -24,7 +24,7 @@ namespace MainApp
                 string keyword = Console.ReadLine();
 
 
-                StockProphet.Prophesy(keyword);
+                prophet.Prophesy(keyword);
 
 
                 Console.Write("New input? (Y): ");
