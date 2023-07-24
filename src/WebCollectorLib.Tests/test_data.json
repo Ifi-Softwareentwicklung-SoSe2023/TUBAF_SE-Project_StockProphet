@@ -1,5 +1,5 @@
 {
-    "RemoveAuthors": [
+    "RemoveLines": [
         ["Here is a very long text that might have been written by the following people: \r\nAutoren: Bob, Harold",
          "Here is a very long text that might have been written by the following people: \r\n"],
         ["Here is another. \r\nAutor: Steve \r\nIt has multiple lines. \nAutoren: Ray.", 
@@ -8,13 +8,9 @@
          "This little Text is about a german 'Autorennen'"]
 
     ],
-    "ChangeName": [
+    "ReplaceName": [
         ["In 2002, Microsoft released .NET Framework, [...] Today .NET Framework is at version 4.8 and remains fully supported by Microsoft", 
          "Microsoft", 
          "In 2002, Compu released .NET Framework, [...] Today .NET Framework is at version 4.8 and remains fully supported by Compu"]
-    ],
-    "RemoveEmojis": [
-        ["how the heck are you supposed to use the 🙃 emoji?",
-         "how the heck are you supposed to use the emoji?"]
     ]
 }

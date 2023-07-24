@@ -7,33 +7,22 @@ namespace WebCollectorLib.Tests
     public class ContentFilterTests
     {
         [Theory]
-        [JsonFileData("../../../test_data.json", "RemoveAuthors")]
-        public static void Should_RemoveAuthors(string input, string expected)
+        [JsonFileData("../../../test_data.json", "RemoveLines")]
+        public static void Should_RemoveLines(string input, string expected)
         {
             // Act
-            string actual = ContentFilter.RemoveAuthors(input);
+            string actual = ContentFilter.RemoveLines(input);
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [JsonFileData("../../../test_data.json", "ChangeName")]
-        public void Should_ChangeName(string input, string name, string expected)
+        [JsonFileData("../../../test_data.json", "ReplaceName")]
+        public void Should_ReplaceName(string input, string name, string expected)
         {
             // Act
-            string actual = ContentFilter.ChangeName(input, name);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
-        [JsonFileData("../../../test_data.json", "RemoveEmojis")]
-        public void Should_RemoveEmojis(string input, string expected)
-        {
-            // Act
-            string actual = ContentFilter.RemoveEmojis(input);
+            string actual = ContentFilter.ReplaceName(input, name);
 
             // Assert
             Assert.Equal(expected, actual);
