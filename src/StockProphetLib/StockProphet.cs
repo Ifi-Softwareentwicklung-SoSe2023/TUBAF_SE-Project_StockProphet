@@ -20,7 +20,7 @@ namespace StockProphetLib
         {
             Handlers.Add(new Collector());
             Handlers.Add(new PreProcessor());
-            Handlers.Add(new Evaluator(modelPath)));
+            Handlers.Add(new Evaluator(modelPath));
         }
         
         public float Prophesy(string KeyWord) 
