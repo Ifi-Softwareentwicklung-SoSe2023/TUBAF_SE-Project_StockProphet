@@ -9,13 +9,16 @@ namespace WebCollectorLib
     public class LinkCollector
     {
         private readonly RawCollector _rawCollector;
-        private readonly WebsiteParser _websiteParser;
+        private readonly IWebsiteParser _websiteParser;
 
-        public LinkCollector()
+        public LinkCollector(IWebsiteParser WebsiteParser)
         {
             _rawCollector = new RawCollector();
-            _websiteParser = new WebsiteParser();
+            _websiteParser = WebsiteParser;
         }
+
+        public LinkCollector() : this(new WebsiteParser_1())
+        {}
 
         public string[] FindLinks(string keyword)
         {

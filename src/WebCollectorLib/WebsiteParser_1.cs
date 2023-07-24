@@ -5,23 +5,23 @@ using System.Linq;
 
 namespace WebCollectorLib
 {
-    public class WebsiteParser
+    public class WebsiteParser_1 : IWebsiteParser
     {
         public string DescendantTag { get; private set; }
         public string AnchorTag { get; private set; }
 
-        public WebsiteParser()
+        public WebsiteParser_1()
         {
             DescendantTag = "h2";
             AnchorTag = "a";
         }
 
-        public string BuildLinkPath(string keyword)
+        string IWebsiteParser.BuildLinkPath(string keyword)
         {
             return $"https://www.deraktionaer.de/suchen?page=1&q={keyword}";
         }
 
-        public IEnumerable<string> FindLinks(string htmlContent)
+        IEnumerable<string> IWebsiteParser.FindLinks(string htmlContent)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(htmlContent);
@@ -36,7 +36,7 @@ namespace WebCollectorLib
             }
         }
 
-        public IEnumerable<string> FindParagraphs(string htmlContent)
+        IEnumerable<string> IWebsiteParser.FindParagraphs(string htmlContent)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(htmlContent);

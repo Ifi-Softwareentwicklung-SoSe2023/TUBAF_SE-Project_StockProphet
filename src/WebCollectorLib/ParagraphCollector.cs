@@ -7,13 +7,16 @@ namespace WebCollectorLib
     public class ParagraphCollector
     {
         private readonly RawCollector _rawCollector;
-        private readonly WebsiteParser _websiteParser;
+        private readonly IWebsiteParser _websiteParser;
 
-        public ParagraphCollector()
+        public ParagraphCollector(IWebsiteParser WebsiteParser)
         {
             _rawCollector = new RawCollector();
-            _websiteParser = new WebsiteParser();
+            _websiteParser = WebsiteParser;
         }
+
+        public ParagraphCollector() : this(new WebsiteParser_1())
+        {}
 
         public List<string> ExtractParagraphsFromLinks(string link)
         {
