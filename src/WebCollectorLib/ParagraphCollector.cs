@@ -15,13 +15,13 @@ namespace WebCollectorLib
             _websiteParser = new WebsiteParser();
         }
 
-        public async Task<List<string>> ExtractParagraphsFromLinks(string link)
+        public List<string> ExtractParagraphsFromLinks(string link)
         {
             try
             {
                 List<string> paragraphs = new List<string>();
                 string realLink = "https://www.deraktionaer.de" + link;
-                string htmlContent = await _rawCollector.DownloadRawHtml(realLink);
+                string htmlContent = _rawCollector.DownloadRawHtml(realLink);
                 var extractedParagraphs = _websiteParser.FindParagraphs(htmlContent);
                 paragraphs.AddRange(extractedParagraphs);
                 return paragraphs;
@@ -33,4 +33,5 @@ namespace WebCollectorLib
             }
         }
     }
+
 }
