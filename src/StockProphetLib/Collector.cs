@@ -5,7 +5,7 @@ namespace StockProphetLib
 {
     class Collector : IArticleHandler
     {
-        private RawToContent ContentExtractor;
+        private ParagraphCollector ContentExtractor;
 
         public void IArticleHandler.Run(Article article) {}
     }
