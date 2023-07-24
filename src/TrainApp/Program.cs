@@ -1,4 +1,5 @@
 ﻿using System;
+using SentimentEvalLib;
 
 namespace TrainApp
 {
@@ -6,7 +7,10 @@ namespace TrainApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ISentimentTrain sentimentEvaluator = new SentimentEvaluator();
+
+            sentimentEvaluator.TrainModel("../../data/dataset.txt");
+            sentimentEvaluator.SaveModel("../../model/model.zip");
         }
     }
 }

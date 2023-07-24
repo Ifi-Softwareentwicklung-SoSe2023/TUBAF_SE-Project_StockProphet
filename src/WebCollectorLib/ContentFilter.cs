@@ -1,11 +1,14 @@
 using System;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebCollectorLib
 {
-    static class ContentFilter
+    public static class ContentFilter
     {
-       /* public static string RemoveAuthors(string Text)
+        public static string RemoveAuthors(string Text)
         {
             // Entfernt alle Paragraphen, die Autor/ Autoren enthalten
             string[] paragraphs = Text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
@@ -21,12 +24,18 @@ namespace WebCollectorLib
             return filteredText;
         }
 
-        public static string RemoveCharacters(string Text)
+        public static string ChangeName(string Text, string name){
+            string nameChanger = Regex.Replace(Text, name, "Compu");
+            
+            return nameChanger;
+        }
+
+        public static string RemoveEmojis(string Text)
         {
-            // Entferne alle Emojiis
+            // Entferne alle Emojis
             string noEmojiText = Regex.Replace(Text, @"[\p{Cs}\p{Co}\p{Cf}\p{Lm}\p{Sk}\p{P}\p{S}]", "");
 
             return noEmojiText;
-        }*/
+        }
     }
 }

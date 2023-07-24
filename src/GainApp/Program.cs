@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using WebCollectorLib;
+using System.Collections.Generic;
 
 namespace LinkCollectorExample
 {
@@ -10,43 +11,55 @@ namespace LinkCollectorExample
         {
             try
             {
-                string keyword = "AMD";
+                Console.Write("Name of Company: ");
+
+                string keyword = Console.ReadLine();
                 
                 LinkCollector linkCollector = new LinkCollector();
                 string[] links = linkCollector.FindLinks(keyword);
 
-                if (links != null && links.Length > 0)
-                {
-                    
-                    ParagraphCollector paragraphCollector = new ParagraphCollector();
-                    
-                    var paragraphsFromLink1 = paragraphCollector.ExtractParagraphsFromLinks(links[0]);
-                    
+                //ContentFilter contentFilter = new ContentFilter();
+                //string text = contentFilter.RemoveAuthors(paragraph);
 
-                    string filePath = "paragraphs.txt";
-                    using (StreamWriter writer = new StreamWriter(filePath))
+                if (links != null && links.Length > 0)
+                {        
+                    List<string> allParagraphs = new List<string>();
+                    ParagraphCollector paragraphCollector = new ParagraphCollector();
+
+                    foreach (var link in links){
+                        var paragraphsFromLink = paragraphCollector.ExtractParagraphsFromLinks(link);
+                        allParagraphs.AddRange(paragraphsFromLink);
+                    }    
+                           
+
+                    string filePathraw = "../../data/paragraphs.txt";
+                    using (StreamWriter writer = new StreamWriter(filePathraw))
                     {
-                        //foreach (var num in vaar){
-                        writer.WriteLine("Paragraphen aus dem ersten Link:");
-                            foreach (var paragraph in paragraphsFromLink1)
-                            {
-                                writer.WriteLine(paragraph);
-                            }
-                       // }
-                       
-                        
+                        foreach (var paragraph in allParagraphs)
+                        {
+                            writer.WriteLine(paragraph);
+                        }
                     }
 
-                    Console.WriteLine("Paragraphen gespeichert.");
+                    string filteredParagraphs = string.Join(Environment.NewLine, allParagraphs);
+                    string filteredText = ContentFilter.RemoveAuthors(filteredParagraphs);
+                    filteredText = ContentFilter.RemoveEmojis(filteredText);
+                    filteredText = ContentFilter.ChangeName(filteredText, keyword);
+
+                    string filePathfilter = "../../data/filtered_paragraphs.txt";
+                    File.WriteAllText(filePathfilter, filteredText);
+
+                    Console.WriteLine("Paragraphs were saved and text was cleaned.");
                 }
+
                 else
                 {
-                    Console.WriteLine($"Keine Links zu '{keyword}' gefunden.");
+                    Console.WriteLine($"No links were found for: '{keyword}'.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fehler: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
     }
