@@ -24,6 +24,12 @@ namespace WebCollectorLib
             return filteredText;
         }
 
+        public static string ChangeName(string Text, string name){
+            string nameChanger = Regex.Replace(Text, name, "Compu");
+            
+            return nameChanger;
+        }
+
         public static string RemoveEmojis(string Text)
         {
             // Entferne alle Emojis
