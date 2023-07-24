@@ -15,7 +15,7 @@ namespace WebCollectorLib
             _websiteParser = new WebsiteParser();
         }
 
-        public async Task<List<string>> ExtractParagraphsFromLinks(string links)
+        public async Task<List<string>> ExtractParagraphsFromLinks(string link)
         {
             try
             {
