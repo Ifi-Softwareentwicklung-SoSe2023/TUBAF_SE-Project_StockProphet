@@ -4,6 +4,6 @@ namespace StockProphetLib
 {
     interface IArticleHandler
     {
-        void Run(Article article);
+        void Run(object article);
     }
 }

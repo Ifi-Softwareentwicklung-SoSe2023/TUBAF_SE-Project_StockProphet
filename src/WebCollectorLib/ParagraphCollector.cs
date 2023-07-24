@@ -15,20 +15,15 @@ namespace WebCollectorLib
             _websiteParser = new WebsiteParser();
         }
 
-        public async Task<List<string>> ExtractParagraphsFromLinks(string[] links)
+        public async Task<List<string>> ExtractParagraphsFromLinks(string link)
         {
             try
             {
                 List<string> paragraphs = new List<string>();
-
-                foreach (string link in links)
-                {
-                    string realLink = "https://www.deraktionaer.de" + link;
-                    string htmlContent = await _rawCollector.DownloadRawHtml(realLink);
-                    var extractedParagraphs = _websiteParser.FindParagraphs(htmlContent);
-                    paragraphs.AddRange(extractedParagraphs);
-                }
-
+                string realLink = "https://www.deraktionaer.de" + link;
+                string htmlContent = await _rawCollector.DownloadRawHtml(realLink);
+                var extractedParagraphs = _websiteParser.FindParagraphs(htmlContent);
+                paragraphs.AddRange(extractedParagraphs);
                 return paragraphs;
             }
             catch (Exception ex)

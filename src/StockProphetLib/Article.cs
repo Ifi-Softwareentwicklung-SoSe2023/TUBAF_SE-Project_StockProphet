@@ -1,14 +1,20 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace StockProphetLib
 {
-    class Article
+    public class Article
     {
+        private static int counter = 0; 
         public int ID { get; private set; }
-        public string Link { get; private set; }
-        public string Title { get; private set; }
-        public string Content { get; set; }
+        public string Link { get; set; }
+        public List<string> Paragraphs { get; set; }
+        public float Sentiment { get; set; }
 
-        public Article() {}
+        public Article() 
+        {
+            ID = counter++;
+        }
     }
 }

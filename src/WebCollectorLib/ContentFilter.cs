@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace WebCollectorLib
 {
-    static class ContentFilter
+    public static class ContentFilter
     {
        /* public static string RemoveAuthors(string Text)
         {

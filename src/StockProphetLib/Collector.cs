@@ -3,10 +3,20 @@ using WebCollectorLib;
 
 namespace StockProphetLib
 {
-    class Collector : IArticleHandler
+    public class Collector : IArticleHandler
     {
-        private RawToContent ContentExtractor;
+        private ParagraphCollector paragraphCollector;
 
-        public void IArticleHandler.Run(Article article) {}
+        public Collector()
+        {
+            paragraphCollector = new ParagraphCollector();
+        }
+
+        void IArticleHandler.Run(object obj) 
+        {
+            Article article = (Article)obj;
+            article.Paragraphs = paragraphCollector
+                .ExtractParagraphsFromLinks(article.Link).Result;
+        }
     }
 }

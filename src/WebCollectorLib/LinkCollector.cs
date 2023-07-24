@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WebCollectorLib
 {
-    class LinkCollector
+    public class LinkCollector
     {
         private readonly RawCollector _rawCollector;
         private readonly WebsiteParser _websiteParser;
