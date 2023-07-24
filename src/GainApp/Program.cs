@@ -11,7 +11,8 @@ namespace LinkCollectorExample
         {
             try
             {
-                string keyword = "SAP";
+                Console.Write("Name of company: ");
+                string keyword = Console.ReadLine();
                 
                 LinkCollector linkCollector = new LinkCollector();
                 string[] links = linkCollector.FindLinks(keyword);
@@ -40,9 +41,8 @@ namespace LinkCollectorExample
                     }
 
                     string filteredParagraphs = string.Join(Environment.NewLine, allParagraphs);
-                    string filteredText = ContentFilter.RemoveAuthors(filteredParagraphs);
-                    filteredText = ContentFilter.RemoveEmojis(filteredParagraphs);
-                    
+                    string filteredText = ContentFilter.RemoveLines(filteredParagraphs);
+                    filteredText = ContentFilter.ReplaceName(filteredText, keyword);
 
                     string filePathfilter = "../../data/filtered_paragraphs.txt";
                     File.WriteAllText(filePathfilter, filteredText);
