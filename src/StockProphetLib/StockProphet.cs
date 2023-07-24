@@ -13,11 +13,14 @@ namespace StockProphetLib
         private List<Article> Articles;
         private List<IArticleHandler> Handlers;
 
-        public StockProphet() 
+        public StockProphet() : this("../../../model/model")
+        {}
+
+        public StockProphet(string modelPath) 
         {
             Handlers.Add(new Collector());
             Handlers.Add(new PreProcessor());
-            Handlers.Add(new Evaluator());
+            Handlers.Add(new Evaluator(modelPath)));
         }
         
         public float Prophesy(string KeyWord) 
