@@ -28,7 +28,7 @@ namespace StockProphetLib
         public float Prophesy(string KeyWord) 
         { 
             LinkCollector linkCollector = new LinkCollector();
-            string[] links = linkCollector.FindLinks(KeyWord).Result;  
+            string[] links = linkCollector.FindLinks(KeyWord);  
          
             CreateArticles(links);
             RunTasks();         
