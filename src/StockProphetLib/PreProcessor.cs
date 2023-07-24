@@ -4,7 +4,10 @@ namespace StockProphetLib
 {
     class PreProcessor : IArticleHandler
     {
-        void IArticleHandler.Run(Article article) {}
+        void IArticleHandler.Run(object obj) 
+        {
+            Article article = (Article)obj;
+        }
 
         private void Clean() {}
 

@@ -12,10 +12,11 @@ namespace StockProphetLib
             paragraphCollector = new ParagraphCollector();
         }
 
-        void IArticleHandler.Run(Article article) 
+        void IArticleHandler.Run(object obj) 
         {
+            Article article = (Article)obj;
             article.Paragraphs = paragraphCollector
-                .ExtractParagraphsFromLinks(article.Link);
+                .ExtractParagraphsFromLinks(article.Link).Result;
         }
     }
 }

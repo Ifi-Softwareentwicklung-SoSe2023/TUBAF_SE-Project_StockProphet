@@ -13,8 +13,10 @@ namespace StockProphetLib
             sentimentEvaluator.LoadModel(modelPath);
         }
 
-        void IArticleHandler.Run(Article article) 
+        void IArticleHandler.Run(object obj) 
         {
+            Article article = (Article)obj;
+
             float sum = 0.0f;
             int counter = 0;
             foreach (var paragraph in article.Paragraphs)

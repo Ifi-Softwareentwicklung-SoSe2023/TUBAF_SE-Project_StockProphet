@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 using WebCollectorLib;
 
@@ -13,7 +15,7 @@ namespace StockProphetLib
         private List<Article> Articles;
         private List<IArticleHandler> Handlers;
 
-        public StockProphet() : this("../../../model/model")
+        public StockProphet() : this("../../model/model")
         {}
 
         public StockProphet(string modelPath) 
@@ -26,7 +28,7 @@ namespace StockProphetLib
         public float Prophesy(string KeyWord) 
         { 
             LinkCollector linkCollector = new LinkCollector();
-            string[] links = await linkCollector.FindLinks(KeyWord);  
+            string[] links = linkCollector.FindLinks(KeyWord).Result;  
          
             CreateArticles(links);
             RunTasks();         
@@ -46,7 +48,7 @@ namespace StockProphetLib
         private void RunTasks() 
         {
             // prepare multicast delegate
-            Action<object> chain;
+            Action<object> chain = new Action<object>((object obj) => {});
             foreach (var handler in Handlers) {
                 chain += handler.Run;
             }
