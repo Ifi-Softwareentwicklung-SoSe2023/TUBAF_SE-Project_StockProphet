@@ -29,10 +29,21 @@ namespace StockProphetLib
         
         public float Prophesy(string KeyWord) 
         { 
+            if(string.IsNullOrEmpty(KeyWord) || KeyWord.Contains(" "))
+            {
+                throw new ArgumentException("Unable to process keywords with blank spaces");
+            }
+
             // initiation
             LinkCollector linkCollector = new LinkCollector();
             string[] links = linkCollector.FindLinks(KeyWord);  
             
+            if(links.Length == 0)
+            {
+                Console.WriteLine("Unable to find articles for given keyword");
+                return 0.0f;
+            }
+
             CreateArticles(links);
 
             Task[] tasks = StartTasks();
