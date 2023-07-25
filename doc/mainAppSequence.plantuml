@@ -19,13 +19,14 @@ participant Evaluator
 ' startup sequence '
 
 activate Main #fc0303
-Main -> StockProphet : Run()
+Main -> UserInterface : GetInput()
 deactivate Main
-activate StockProphet #fca103
-
-StockProphet -> UserInterface : GetInput()
-deactivate StockProphet
-StockProphet <-- UserInterface : keyword
+activate UserInterface
+Main <-- UserInterface : keyword()
+deactivate UserInterface
+activate Main #fc0303
+Main -> StockProphet : Prophesy(keyword)
+deactivate Main
 activate StockProphet #fca103
 
 StockProphet -> StockProphet : GetLinks()

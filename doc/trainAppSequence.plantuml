@@ -5,9 +5,9 @@ skinparam ResponseMessageBelowArrow true
 ' participants '
 participant Main
 participant ISentimentTrain
-database CSV_Dataset
+database Dataset
 
-
+/'
 Main -> ISentimentTrain : LoadData()
 ISentimentTrain -> CSV_Dataset
 ISentimentTrain <-- CSV_Dataset
@@ -25,5 +25,22 @@ Main <-- ISentimentTrain : test result
 
 Main -> ISentimentTrain : SaveModel()
 Main <-- ISentimentTrain
+'/
+
+Main -> ISentimentTrain : TrainModel()
+
+ISentimentTrain -> ISentimentTrain : LoadData()
+activate ISentimentTrain
+ISentimentTrain -> Dataset
+ISentimentTrain <-- Dataset
+deactivate ISentimentTrain
+
+ISentimentTrain -> ISentimentTrain : CreateModel()
+activate ISentimentTrain
+... extensive model training ...
+ISentimentTrain -> ISentimentTrain
+deactivate ISentimentTrain
+
+ISentimentTrain -> ISentimentTrain : Test()
 
 @enduml

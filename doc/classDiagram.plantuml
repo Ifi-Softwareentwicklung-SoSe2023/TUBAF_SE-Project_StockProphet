@@ -8,11 +8,14 @@ title Stock Prophet Class Diagram
 package StockProphetLib {
 
     class StockProphet {
-        -Terminal: Terminal
         -Articles: List<Article>
         -Handlers: List<IArticleHandler>
-        +Prophesy(string keyword): void
-        -StartTasks(): void
+        +StockProphet(string modelPath)
+        +Prophesy(string keyword): float
+        -CreateArticles(string[], string): void
+        -StartTasks(): Task[]
+        -StatusLoop(Task[], Terminal): void
+        -SumSentiment(): float
     }
     StockProphet --> WebCollectorLib.LinkCollector
     StockProphet --> Collector
@@ -26,7 +29,7 @@ package StockProphetLib {
 
 
     class Collector {
-        -ContentExtractor: ParagraphCollector
+        -paragraphCollector: ParagraphCollector
         +Run(Article): void
     }
     Collector --|> IArticleHandler
@@ -35,15 +38,14 @@ package StockProphetLib {
 
     class PreProcessor {
         +Run(Article): void
-        -Clean(): void
-        -Seperate(): void
     }
     PreProcessor --|> IArticleHandler
     PreProcessor --> WebCollectorLib.ContentFilter
 
 
     class Evaluator {
-        -SentimentEval: ISentiment
+        -sentimentEvaluator: ISentiment
+        +Evaluator(string modelPath)
         +Run(Article): void
         -EvaluateParagraph(string): float
     }
@@ -53,18 +55,19 @@ package StockProphetLib {
 
     class Article {
         +ID: int
+        +Keyword: string
         +Link: string
-        +Title: string
         +Paragraphs: List<string>
         +Sentiment: float
     }
 
 
     class Terminal {
-        -StatusTemplate: string
+        -Articles: List<Article>
         +PrintStatus(): void
-        -ResultTemplate: string
         +PrintResult(): void
+        -SetColorByValue(): void
+        -ResetColor(): void
     }
 }
 
@@ -73,9 +76,10 @@ package WebCollectorLib
 {
     class LinkCollector {
         -Keyword: string
-        - _rawCollector: RawCollector
-        - _websiteParser: IWebsiteParser
-        +FindLinks(keyword: string): Task<string[]>
+        -_rawCollector: RawCollector
+        -_websiteParser: IWebsiteParser
+        +LinkCollector(IWebsiteParser)
+        +FindLinks(keyword: string): string[]
     }
     LinkCollector --> RawCollector
     LinkCollector --> WebsiteParser_1
@@ -84,19 +88,22 @@ package WebCollectorLib
     class ParagraphCollector {
         -_rawCollector: RawCollector
         -_websiteParser: IWebsiteParser
-        +ExtractParagraphsFromLink(link: string): Task<List<string>>
+        +ParagraphCollector(IWebsiteParser)
+        +ExtractParagraphsFromLinks(link: string): List<string>
     }
     ParagraphCollector --> RawCollector
     ParagraphCollector --> WebsiteParser_1
 
 
     class RawCollector {
-      +_client: HttpClient
-      +DownloadRawHtml(url: string): Task<string>
+      -_client: HttpClient
+      +RawCollector()
+      +DownloadRawHtml(url: string): string
     }
 
 
     interface IWebsiteParser {
+        +BuildLinkPath(string): string
         +FindLinks(string): Link<string>
         +FindParagraphs(string): Link<string>
     }
@@ -104,6 +111,8 @@ package WebCollectorLib
     class WebsiteParser_1 {
         -DescendantTag: string
         -AnchorTag: string
+        +WebsiteParser_1()
+        +BuildLinkPath(string): string
         +FindLinks(htmlContent: string): List<string>
         +FindParagraphs(htmlContent: string): List<string>
     }
@@ -111,11 +120,9 @@ package WebCollectorLib
     
 
     class ContentFilter {
-        {static} +removeAuthors()
-        {static} +removeCharacters()
-        {static} +replaceCharacters()
+        {static} +removeLines()
+        {static} +replaceName()
     }
-
 }
 
 package SentimentEvalLib 
