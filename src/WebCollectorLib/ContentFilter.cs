@@ -18,7 +18,7 @@ namespace WebCollectorLib
             {
                 if (!paragraph.Contains("Autor:") && !paragraph.Contains("Autoren:")&& !paragraph.Contains("978"))
                 {
-                    filteredText += paragraph + Environment.NewLine;
+                    filteredText += paragraph + '\n';
                 }
             }
 
