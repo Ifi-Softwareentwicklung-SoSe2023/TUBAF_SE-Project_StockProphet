@@ -1,32 +1,34 @@
 using System;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace WebCollectorLib
 {
     public static class ContentFilter
     {
-       /* public static string RemoveAuthors(string Text)
+        public static string RemoveLines(string Text)
         {
-            // Entfernt alle Paragraphen, die Autor/ Autoren enthalten
+            // Entfernt alle Paragraphen, die Autor/ Autoren und unnötiges Content enthalten
             string[] paragraphs = Text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             string filteredText = "";
             foreach (string paragraph in paragraphs)
             {
-                if (!paragraph.Contains("Autor") && !paragraph.Contains("Autoren"))
+                if (!paragraph.Contains("Autor:") && !paragraph.Contains("Autoren:")&& !paragraph.Contains("978"))
                 {
-                    filteredText += paragraph + Environment.NewLine;
+                    filteredText += paragraph + '\n';
                 }
             }
 
             return filteredText;
         }
 
-        public static string RemoveCharacters(string Text)
+        public static string ReplaceName(string Text, string Name)
         {
-            // Entferne alle Emojiis
-            string noEmojiText = Regex.Replace(Text, @"[\p{Cs}\p{Co}\p{Cf}\p{Lm}\p{Sk}\p{P}\p{S}]", "");
-
-            return noEmojiText;
-        }*/
+            string newName = Regex.Replace(Text, Name, "Compu");
+            return newName;
+        }
     }
 }

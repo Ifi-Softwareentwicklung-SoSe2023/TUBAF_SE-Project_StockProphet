@@ -7,21 +7,24 @@ namespace WebCollectorLib
     public class ParagraphCollector
     {
         private readonly RawCollector _rawCollector;
-        private readonly WebsiteParser _websiteParser;
+        private readonly IWebsiteParser _websiteParser;
 
-        public ParagraphCollector()
+        public ParagraphCollector(IWebsiteParser WebsiteParser)
         {
             _rawCollector = new RawCollector();
-            _websiteParser = new WebsiteParser();
+            _websiteParser = WebsiteParser;
         }
 
-        public async Task<List<string>> ExtractParagraphsFromLinks(string link)
+        public ParagraphCollector() : this(new WebsiteParser_1())
+        {}
+
+        public List<string> ExtractParagraphsFromLinks(string link)
         {
             try
             {
                 List<string> paragraphs = new List<string>();
                 string realLink = "https://www.deraktionaer.de" + link;
-                string htmlContent = await _rawCollector.DownloadRawHtml(realLink);
+                string htmlContent = _rawCollector.DownloadRawHtml(realLink);
                 var extractedParagraphs = _websiteParser.FindParagraphs(htmlContent);
                 paragraphs.AddRange(extractedParagraphs);
                 return paragraphs;
@@ -33,4 +36,5 @@ namespace WebCollectorLib
             }
         }
     }
+
 }

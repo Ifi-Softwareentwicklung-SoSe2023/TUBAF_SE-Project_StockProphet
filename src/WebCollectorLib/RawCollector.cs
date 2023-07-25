@@ -15,11 +15,11 @@ namespace WebCollectorLib
             _client = new HttpClient();
         }
 
-        public async Task<string> DownloadRawHtml(string url)
+        public string DownloadRawHtml(string url)
         {
             try
             {
-                return await _client.GetStringAsync(url);
+                return _client.GetStringAsync(url).Result;
             }
             catch (Exception ex)
             {

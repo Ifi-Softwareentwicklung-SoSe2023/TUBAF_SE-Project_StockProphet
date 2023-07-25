@@ -16,7 +16,7 @@ namespace StockProphetLib
         {
             Article article = (Article)obj;
             article.Paragraphs = paragraphCollector
-                .ExtractParagraphsFromLinks(article.Link).Result;
+                .ExtractParagraphsFromLinks(article.Link);
         }
     }
 }

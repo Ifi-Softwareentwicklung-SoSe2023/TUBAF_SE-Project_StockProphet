@@ -14,7 +14,10 @@ namespace StockProphetLib
 
         public Article() 
         {
-            ID = counter++;
+            ID          = counter++;
+            Link        = "";
+            Paragraphs  = new List<string>();
+            Sentiment   = 0.0f;
         }
     }
 }

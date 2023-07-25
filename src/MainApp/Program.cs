@@ -1,4 +1,6 @@
 ﻿using System;
+using StockProphetLib;
+
 
 namespace MainApp
 {
@@ -6,7 +8,30 @@ namespace MainApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            StockProphet prophet = new StockProphet();
+
+
+            Console.WriteLine("========================================");
+            Console.WriteLine("Greetings, explorer of the stock market."); 
+            Console.WriteLine("The Stock Prophet welcomes you!");
+            Console.WriteLine("========================================");
+            Console.WriteLine();
+
+
+            while(true)
+            {
+                Console.Write("Please enter the name of a company to search for: ");
+                string keyword = Console.ReadLine();
+
+
+                prophet.Prophesy(keyword);
+
+
+                Console.Write("New input? (Y): ");
+                if(Console.ReadLine() != "Y") break;
+
+                Console.Clear();   
+            }
         }
     }
 }

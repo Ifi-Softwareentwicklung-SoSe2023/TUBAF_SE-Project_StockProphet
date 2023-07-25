@@ -23,8 +23,8 @@ namespace StockProphetLib
             {
                 sum += EvaluateParagraph(paragraph);
                 counter++;
+                article.Sentiment = sum / counter;
             }
-            article.Sentiment = sum / counter;
         }
 
         private float EvaluateParagraph(string paragraph) 

@@ -1,26 +1,31 @@
 using System;
 using System.Threading.Tasks;
-using System.Linq; 
+using System.Linq;
+using System.Net.Http;
+using HtmlAgilityPack;
 
 namespace WebCollectorLib
 {
     public class LinkCollector
     {
         private readonly RawCollector _rawCollector;
-        private readonly WebsiteParser _websiteParser;
+        private readonly IWebsiteParser _websiteParser;
 
-        public LinkCollector()
+        public LinkCollector(IWebsiteParser WebsiteParser)
         {
             _rawCollector = new RawCollector();
-            _websiteParser = new WebsiteParser();
+            _websiteParser = WebsiteParser;
         }
 
-        public async Task<string[]> FindLinks(string keyword)
+        public LinkCollector() : this(new WebsiteParser_1())
+        {}
+
+        public string[] FindLinks(string keyword)
         {
             try
             {
                 string articleUrl = _websiteParser.BuildLinkPath(keyword);
-                string htmlContent = await _rawCollector.DownloadRawHtml(articleUrl);
+                string htmlContent = _rawCollector.DownloadRawHtml(articleUrl);
 
                 var articleLinks = _websiteParser.FindLinks(htmlContent);
                 return articleLinks.ToArray();
@@ -31,5 +36,5 @@ namespace WebCollectorLib
                 return null;
             }
         }
-    }   
+    }
 }
