@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using SentimentEvalLib;
 
 namespace StockProphetLib
@@ -24,6 +25,9 @@ namespace StockProphetLib
                 sum += EvaluateParagraph(paragraph);
                 counter++;
                 article.Sentiment = sum / counter;
+                
+                // uncomment for more dramatic terminal output
+                // Thread.Sleep(200);
             }
         }
 

@@ -8,7 +8,7 @@ namespace MainApp
     {
         static void Main(string[] args)
         {
-            StockProphet prophet = new StockProphet();
+            StockProphet prophet = new StockProphet("../../model/model2");
 
 
             Console.WriteLine("========================================");

@@ -10,7 +10,7 @@ namespace TrainApp
             ISentimentTrain sentimentEvaluator = new SentimentEvaluator();
 
             sentimentEvaluator.TrainModel("../../data/dataset.txt");
-            sentimentEvaluator.SaveModel("../../model/model.zip");
+            sentimentEvaluator.SaveModel("../../model/model2.zip");
         }
     }
 }
