@@ -7,12 +7,12 @@ namespace StockProphetLib.Tests
     public class StockProphetTests
     {
         [Theory]
-        [InlineData("LeCompany")]
-        [InlineData("StonksCo.")]
+        [InlineData("Intel")]
+        [InlineData("StonksCo")]
         public void Prophesy_ShouldReturnFloatInRange0To1(string keyword)
         {
             // Arrange
-            StockProphet prophet = new StockProphet();
+            StockProphet prophet = new StockProphet("../../../../../model/model");
             
             // Act
             float actual = prophet.Prophesy(keyword);
@@ -26,7 +26,7 @@ namespace StockProphetLib.Tests
         public void Prophesy_ShouldThrowOnEmpty()
         {
             // Arrange
-            StockProphet prophet = new StockProphet();
+            StockProphet prophet = new StockProphet("../../../../../model/model");
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => prophet.Prophesy(""));
@@ -39,7 +39,7 @@ namespace StockProphetLib.Tests
         public void Prophesy_ShouldThrowOnSpaces(string keyword)
         {
             // Arrange
-            StockProphet prophet = new StockProphet();
+            StockProphet prophet = new StockProphet("../../../../../model/model");
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => prophet.Prophesy(keyword));
