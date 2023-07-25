@@ -26,18 +26,20 @@ This project aims to predict the performance of stocks and funds of different co
     - Ongoing review and update of data collection to provide the network with up-to-date information.
 
 
-### Requirements
+### Installation
 
-+ ML.NET: Install and configure the ML.NET library for neural network development.
++ Verify you have .NET 7.0 installed
++ clone the repository
++ Check out the projects main application:
+  - navigate to ```src/MainApp/```
+  - call ```dotnet run```
 
-+ Data Collection: independently search and collect articles about various companies and their stocks/funds.
++ For collecting new articles in order to prepare a new dataset for model training:
+  - navigate to ```src/GainApp/```
+  - specify what companies to search for in Program.cs 
+  - call ```dotnet run```
 
-+ Data classification: classify articles into positive and negative connotations.
-
-+ Training data: Using the classified articles as training data for the neural network.
-
-+ User interface: development of an interactive user interface for entering stock and fund names and displaying predictions.
-
-+ Continuous improvement: ongoing update and improvement of the neural network and data collection.
-
-
++ For re-training the sentiment AI model on a new dataset:
+  - navigate to ```src/TrainApp/```
+  - (optional) adjust paths to dataset and model in Program.cs
+  - call ```dotnet run``` 
