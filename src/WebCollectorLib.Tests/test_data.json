@@ -1,0 +1,16 @@
+{
+    "RemoveLines": [
+        ["Here is a very long text that might have been written by the following people: \nAutoren: Bob, Harold",
+         "Here is a very long text that might have been written by the following people: \n"],
+        ["Here is another. \nAutor: Steve \nIt has multiple lines. \nAutoren: Ray.", 
+         "Here is another. \nIt has multiple lines. \n"],
+        ["This little Text is about a german 'Autorennen'",
+         "This little Text is about a german 'Autorennen'\n"]
+
+    ],
+    "ReplaceName": [
+        ["In 2002, Microsoft released .NET Framework, [...] Today .NET Framework is at version 4.8 and remains fully supported by Microsoft", 
+         "Microsoft", 
+         "In 2002, Compu released .NET Framework, [...] Today .NET Framework is at version 4.8 and remains fully supported by Compu"]
+    ]
+}
