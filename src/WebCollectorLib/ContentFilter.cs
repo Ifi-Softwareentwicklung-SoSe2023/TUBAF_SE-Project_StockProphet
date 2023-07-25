@@ -16,7 +16,7 @@ namespace WebCollectorLib
             string filteredText = "";
             foreach (string paragraph in paragraphs)
             {
-                if (!paragraph.Contains("Autor") && !paragraph.Contains("Autoren")&& !paragraph.Contains("978"))
+                if (!paragraph.Contains("Autor:") && !paragraph.Contains("Autoren:")&& !paragraph.Contains("978"))
                 {
                     filteredText += paragraph + Environment.NewLine;
                 }
