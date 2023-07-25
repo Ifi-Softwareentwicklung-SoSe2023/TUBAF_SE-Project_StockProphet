@@ -44,7 +44,7 @@ namespace StockProphetLib
                 return 0.0f;
             }
 
-            CreateArticles(links);
+            CreateArticles(links, KeyWord);
 
             Task[] tasks = StartTasks();
             Terminal terminal = new Terminal(Articles);
@@ -59,11 +59,11 @@ namespace StockProphetLib
             return totalSentiment;
         }
 
-        private void CreateArticles(string[] Links) 
+        private void CreateArticles(string[] Links, string Keyword) 
         {
             foreach (var ln in Links)
             {
-                Article article = new Article();
+                Article article = new Article(Keyword);
                 article.Link = ln;
                 Articles.Add(article);
             }
